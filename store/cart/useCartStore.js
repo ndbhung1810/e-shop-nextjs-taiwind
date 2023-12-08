@@ -88,8 +88,8 @@ const useCartStore = create((set, get) => ({
     // set({ isLoading: true });
     try {
       const result = await axiosClient.get("/cart");
-      const data = result.data.payload;
-      set({ cart: data, totalItem: data.length, isLoading: false });
+      const data = result?.data?.payload;
+      set({ cart: data, totalItem: data?.length, isLoading: false });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("◀◀◀ error ▶▶▶", error);
@@ -101,8 +101,8 @@ const useCartStore = create((set, get) => ({
     // set({ isLoading: true });
     try {
       const result = await axiosClient.get("/cart/get-cart-flashsale");
-      const data = result.data.payload;
-      set({ cart: data, totalItem: data.length, isLoading: false });
+      const data = result?.data?.payload;
+      set({ cart: data, totalItem: data?.length, isLoading: false });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("◀◀◀ error ▶▶▶", error);
@@ -163,8 +163,8 @@ const useCartStore = create((set, get) => ({
       const newCart = await axiosClient.get("/cart");
       set({
         isLoading: false,
-        cart: newCart.data.payload,
-        totalItem: newCart.data.payload.length,
+        cart: newCart.data?.payload,
+        totalItem: newCart.data?.payload?.length,
       });
       message.success("Add cart success");
     } catch (error) {
@@ -189,8 +189,8 @@ const useCartStore = create((set, get) => ({
       axiosClient.get("/time-flashsale"),
     ]);
 
-    if (getTimeFlashsale.data.payload.expirationTime) {
-      let endOfSale = getTimeFlashsale.data.payload.expirationTime.slice(0, 10);
+    if (getTimeFlashsale.data?.payload.expirationTime) {
+      let endOfSale = getTimeFlashsale.data?.payload.expirationTime.slice(0, 10);
 
       endOfSale += " 23:59:59";
 
@@ -203,7 +203,7 @@ const useCartStore = create((set, get) => ({
         return;
       }
 
-      if (!getTimeFlashsale.data.payload.isOpenFlashsale) {
+      if (!getTimeFlashsale.data?.payload.isOpenFlashsale) {
         set({ isLoading: false });
         message.error("Flash sale has not opened yet");
 
@@ -211,7 +211,7 @@ const useCartStore = create((set, get) => ({
       }
     }
 
-    if (checkStockFlashsale.data.flashsaleStock <= 0) {
+    if (checkStockFlashsale.data?.flashsaleStock <= 0) {
       set({ isLoading: false });
       message.error("The product has been sold out");
       return;
@@ -356,7 +356,8 @@ const useCartStore = create((set, get) => ({
     set({ isLoading: true });
     try {
       const result = await axiosClient.delete("cart");
-      set({ isLoading: false, cart: result.data.payload, totalItem: result.data.payload.length });
+      console.log(result)
+      set({ isLoading: false, cart: result?.data?.payload, totalItem: result?.data?.payload?.length });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("◀◀◀ error ▶▶▶", error);
